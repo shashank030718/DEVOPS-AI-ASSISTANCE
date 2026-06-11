@@ -12,18 +12,9 @@ export default function Home() {
     try {
       const res = await fetch("/api/history");
       const data = await res.json();
-
-      console.log("History Response:", data);
-
-      if (Array.isArray(data)) {
-        setHistory(data);
-      } else {
-        console.error("History is not an array:", data);
-        setHistory([]);
-      }
+      setHistory(data);
     } catch (error) {
-      console.error("Error fetching history:", error);
-      setHistory([]);
+      console.error(error);
     }
   };
 
@@ -49,7 +40,7 @@ export default function Home() {
 
       const data = await res.json();
 
-      setResult(data.response || "No response received.");
+      setResult(data.response);
 
       await fetchHistory();
     } catch (error) {
@@ -95,7 +86,7 @@ export default function Home() {
           Previous Generations
         </h2>
 
-        {!Array.isArray(history) || history.length === 0 ? (
+        {history.length === 0 ? (
           <p>No history found.</p>
         ) : (
           history.map((item: any, index: number) => (
